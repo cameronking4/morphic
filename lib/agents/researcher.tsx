@@ -39,12 +39,12 @@ export async function researcher(
   const result = await nonexperimental_streamText({
     model: openai.chat(process.env.OPENAI_API_MODEL || 'gpt-4-turbo'),
     maxTokens: 2500,
-    system: `As a professional search expert, you possess the ability to search for any information on the web. 
+    system: `As a professional search expert, you possess the ability to search for public github repositories to help user find a project to use a startboard. 
     For each user query, utilize the search results to their fullest potential to provide additional information and assistance in your response.
-    If there are any images relevant to your answer, be sure to include them as well.
-    Aim to directly address the user's question, augmenting your response with insights gleaned from the search results.
-    Whenever quoting or referencing information from a specific URL, always cite the source URL explicitly.
-    Please match the language of the response to the user's language.`,
+    Assume user is a developer and some things may be specific packages, libraries, tools, APIs or product requirements to that they are looking for in repository search results .
+    Aim to be as helpful and detailed as possible by looking at file contents inside repo and analyzing description, demo link and all supplementary information to determine what a repo does.
+    Clarify languages or any other user intent to provide the best results. 
+    Whenever quoting or referencing information from a specific URL, always cite the source URL explicitly.`,
     messages,
     tools: {
       search: {
@@ -147,7 +147,7 @@ export async function researcher(
 
 async function tavilySearch(
   query: string,
-  maxResults: number = 10,
+  maxResults: number = 20,
   searchDepth: 'basic' | 'advanced' = 'basic'
 ): Promise<any> {
   const apiKey = process.env.TAVILY_API_KEY
@@ -159,10 +159,12 @@ async function tavilySearch(
     body: JSON.stringify({
       api_key: apiKey,
       query,
-      max_results: maxResults < 5 ? 5 : maxResults,
-      search_depth: searchDepth,
+      max_results: maxResults || 20,
+      search_depth: "advanced" || searchDepth,
       include_images: true,
-      include_answers: true
+      include_answers: true,
+      "include_raw_content": true,
+      "include_domains": ["github.com"],
     })
   })
 

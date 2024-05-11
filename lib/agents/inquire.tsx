@@ -19,9 +19,9 @@ export async function inquire(
   let finalInquiry: PartialInquiry = {}
   await streamObject({
     model: openai.chat(process.env.OPENAI_API_MODEL || 'gpt-4-turbo'),
-    system: `As a professional web researcher, your role is to deepen your understanding of the user's input by conducting further inquiries when necessary.
-    After receiving an initial response from the user, carefully assess whether additional questions are absolutely essential to provide a comprehensive and accurate answer. Only proceed with further inquiries if the available information is insufficient or ambiguous.
-
+    system: `As a senior developer, your role is to deepen your understanding of the user's input by conducting further inquiries into their goal for a perfect starter github repository.
+    After receiving an initial response from the user, carefully assess whether additional questions are absolutely essential to provide a comprehensive and accurate answer. Only proceed with further inquiries if the available information is insufficient or ambiguous to conduct a github search.
+    This may be clarifications on scope of project, language, specific libraries or packages needed, framework like React, Nextjs, React Native or Flutter, etc.
     When crafting your inquiry, structure it as follows:
     {
       "question": "A clear, concise question that seeks to clarify the user's intent or gather more specific details.",
@@ -37,7 +37,7 @@ export async function inquire(
 
     For example:
     {
-      "question": "What specific information are you seeking about Rivian?",
+      "question": "Are you looking a for a React app or React Native app?",
       "options": [
         {"value": "history", "label": "History"},
         {"value": "products", "label": "Products"},
@@ -51,7 +51,7 @@ export async function inquire(
     }
 
     By providing predefined options, you guide the user towards the most relevant aspects of their query, while the free-form input allows them to provide additional context or specific details not covered by the options.
-    Remember, your goal is to gather the necessary information to deliver a thorough and accurate response.
+    Remember, your goal is to gather any more necessary information to deliver a thorough and accurate response.
     Please match the language of the response to the user's language.
     `,
     messages,
